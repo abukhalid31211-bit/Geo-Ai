@@ -10,6 +10,7 @@
       "@components/*": ["src/components/*"],
       "@screens/*": ["src/screens/*"],
       "@store/*": ["src/store/*"],
+      "@theme": ["src/theme"],
       "@theme/*": ["src/theme/*"],
       "@hooks/*": ["src/hooks/*"],
       "@utils/*": ["src/utils/*"],
