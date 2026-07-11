@@ -43,3 +43,44 @@ export const SUPPORTED_FILE_TYPES = {
   topographic: ['csv', 'txt', 'dxf'],
   ert: ['csv', 'txt'],
 } as const;
+
+// Target types for display
+export const TARGET_TYPE_LABELS = {
+  gold:    'ذهب',
+  void:    'فراغ صناعي',
+  water:   'مياه جوفية',
+  pipe:    'أنابيب',
+  metal:   'معدن',
+  unknown: 'غير محدد',
+} as const;
+
+export const TARGET_TYPE_ICONS = {
+  gold:    '🥇',
+  void:    '🕳️',
+  water:   '💧',
+  pipe:    '🔧',
+  metal:   '⚙️',
+  unknown: '❓',
+} as const;
+
+// Project type labels
+export const PROJECT_TYPE_LABELS = {
+  gpr:          'رادار أرضي GPR',
+  ert:          'مقاومة كهربائية ERT',
+  topographic:  'مسح طبوغرافي',
+  combined:     'مسح مدمج',
+} as const;
+
+// Project status labels
+export const PROJECT_STATUS_LABELS = {
+  active:    'نشط',
+  completed: 'مكتمل',
+  archived:  'مؤرشف',
+} as const;
+
+// Subscription plan labels
+export const PLAN_LABELS = {
+  free:       'المجاني',
+  pro:        'الاحترافي',
+  enterprise: 'المؤسسي',
+} as const;
