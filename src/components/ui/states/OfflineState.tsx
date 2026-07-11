@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
-import { typography } from '@theme/typography';
-import { spacing } from '@theme/spacing';
+import { Colors, Spacing, Typography } from '@theme';
 
 interface OfflineStateProps {
   title?: string;
@@ -19,7 +17,7 @@ export function OfflineState({ title = '', message = '' }: OfflineStateProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: spacing.xxxl },
-  title: { ...typography.heading.md, color: colors.text, marginBottom: spacing.md },
-  message: { ...typography.body.md, color: colors.textSecondary, textAlign: 'center' },
+  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: Spacing[8] },
+  title: { ...Typography.titleMedium, color: Colors.textPrimary, marginBottom: Spacing[3] },
+  message: { ...Typography.bodyMedium, color: Colors.textSecondary, textAlign: 'center' },
 });

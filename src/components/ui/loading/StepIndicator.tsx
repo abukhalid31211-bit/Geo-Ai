@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { colors } from '@theme/colors';
+import { Colors } from '@theme';
 
 interface StepIndicatorProps {
   size?: number | 'small' | 'large';
@@ -9,7 +9,7 @@ interface StepIndicatorProps {
 export function StepIndicator({ size = 'large' }: StepIndicatorProps) {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size={size} color={colors.gold} />
+      <ActivityIndicator size={size} color={Colors.primary} />
     </View>
   );
 }

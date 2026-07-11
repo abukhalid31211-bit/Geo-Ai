@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
-import { colors } from '@theme/colors';
-import { borderRadius } from '@theme/borderRadius';
-import { spacing } from '@theme/spacing';
+import { Colors, Spacing, BorderRadius } from '@theme';
 
 interface FullModalProps {
   visible?: boolean;
@@ -21,11 +19,11 @@ export function FullModal({ visible = false, onDismiss, children }: FullModalPro
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: colors.overlay },
+  overlay: { flex: 1, justifyContent: 'flex-end', backgroundColor: Colors.overlay },
   container: {
-    backgroundColor: colors.surface,
-    borderTopLeftRadius: borderRadius.xl,
-    borderTopRightRadius: borderRadius.xl,
-    padding: spacing.xl,
+    backgroundColor: Colors.surfacePrimary,
+    borderTopLeftRadius: BorderRadius.xl,
+    borderTopRightRadius: BorderRadius.xl,
+    padding: Spacing[5],
   },
 });

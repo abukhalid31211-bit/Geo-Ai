@@ -1,8 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
-import { typography } from '@theme/typography';
-import { spacing } from '@theme/spacing';
+import { Colors, Spacing, Typography } from '@theme';
 
 interface TabBarProps {
   title?: string;
@@ -14,7 +12,7 @@ export function TabBar({ title = '', onPress }: TabBarProps) {
     <View style={styles.container}>
       {onPress ? (
         <TouchableOpacity onPress={onPress}>
-          <Text style={styles.back}>{'\u2190'}</Text>
+          <Text style={styles.back}>{'←'}</Text>
         </TouchableOpacity>
       ) : null}
       <Text style={styles.title}>{title}</Text>
@@ -23,7 +21,7 @@ export function TabBar({ title = '', onPress }: TabBarProps) {
 }
 
 const styles = StyleSheet.create({
-  container: { flexDirection: 'row', alignItems: 'center', padding: spacing.md },
-  title: { ...typography.heading.sm, color: colors.text },
-  back: { ...typography.heading.md, color: colors.gold, marginRight: spacing.md },
+  container: { flexDirection: 'row', alignItems: 'center', padding: Spacing[3] },
+  title: { ...Typography.titleSmall, color: Colors.textPrimary },
+  back: { ...Typography.titleMedium, color: Colors.primary, marginRight: Spacing[3] },
 });
