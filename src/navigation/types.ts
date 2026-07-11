@@ -1,85 +1,110 @@
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NavigatorScreenParams } from '@react-navigation/native';
 
+// ── Auth Stack ───────────────────────────────────────────────
 export type AuthStackParamList = {
-  Splash: undefined;
-  Onboarding: undefined;
-  Login: undefined;
-  Register: undefined;
+  Splash:         undefined;
+  Onboarding:     undefined;
+  Login:          undefined;
+  Register:       undefined;
   ForgotPassword: undefined;
 };
 
-export type MainTabParamList = {
-  HomeTab: undefined;
-  ProjectsTab: undefined;
-  DetectorTab: undefined;
-  ThreeDTab: undefined;
-  SettingsTab: undefined;
-};
-
+// ── Home Stack ───────────────────────────────────────────────
 export type HomeStackParamList = {
-  Home: undefined;
+  HomeMain:      undefined;
   Notifications: undefined;
 };
 
+// ── Projects Stack ───────────────────────────────────────────
 export type ProjectsStackParamList = {
-  ProjectsList: undefined;
-  CreateProject: undefined;
-  ProjectDetail: { projectId: string };
+  ProjectsList:  undefined;
+  CreateProject: { step?: number };
+  ProjectDetail: { projectId: string; tab?: 'overview' | 'files' | 'log' };
+  FileViewer:    { fileId: string; projectId: string };
 };
 
+// ── Survey Stack ─────────────────────────────────────────────
 export type SurveyStackParamList = {
-  SurveyModule: { projectId: string };
-  TopoMap: { projectId: string };
-  TopoImport: { projectId: string };
-  TopoContour: { projectId: string };
-  TopoExport: { projectId: string };
-  GPRImport: { projectId: string };
-  GPRRadargram: { projectId: string };
-  GPRProcessing: { projectId: string };
-  ERTInput: { projectId: string };
-  ERTHeatmap: { projectId: string };
-  ERTAnomaly: { projectId: string };
+  SurveyModule:     undefined;
+  // Topographic
+  TopoMap:          { projectId?: string };
+  TopoImport:       { projectId?: string };
+  TopoContour:      { projectId?: string };
+  TopoExport:       { projectId?: string };
+  TopoLayerManager: { projectId?: string };
+  // GPR
+  GPRImport:        { projectId?: string };
+  GPRRadargram:     { fileId: string; projectId?: string };
+  GPRProcessing:    { fileId: string; projectId?: string };
+  // ERT
+  ERTInput:         { projectId?: string };
+  ERTHeatmap:       { projectId?: string };
+  ERTAnomaly:       { projectId?: string };
 };
 
+// ── Detector Stack ───────────────────────────────────────────
 export type DetectorStackParamList = {
-  DetectorMain: undefined;
+  DetectorMain:    undefined;
   DetectorResults: { scanId: string };
   DetectorHistory: undefined;
+  ScanDetail:      { scanId: string };
 };
 
+// ── 3D Stack ─────────────────────────────────────────────────
 export type ThreeDStackParamList = {
-  ThreeDViewer: { projectId: string };
-  ThreeDExport: { projectId: string };
+  ThreeDViewer: { projectId?: string; scanId?: string };
+  ThreeDExport: { projectId?: string };
 };
 
+// ── Reports Stack ────────────────────────────────────────────
 export type ReportsStackParamList = {
-  ReportsList: undefined;
+  ReportsList:     undefined;
   ReportTemplates: { projectId: string };
-  ReportViewer: { reportId: string };
-  ReportExport: { reportId: string };
+  ReportViewer:    { reportId: string };
+  ReportExport:    { reportId: string };
 };
 
+// ── Settings Stack ───────────────────────────────────────────
 export type SettingsStackParamList = {
-  SettingsMain: undefined;
-  Profile: undefined;
-  EditProfile: undefined;
-  SensorSettings: undefined;
+  SettingsMain:         undefined;
+  Profile:              undefined;
+  EditProfile:          undefined;
+  SensorSettings:       undefined;
   NotificationSettings: undefined;
-  Privacy: undefined;
-  Help: undefined;
+  Privacy:              undefined;
+  Help:                 undefined;
+  About:                undefined;
+  Plans:                undefined;
+  Payment:              { planId: string; cycle: 'monthly' | 'yearly' };
+  BillingHistory:       undefined;
 };
 
+// ── Drawer ───────────────────────────────────────────────────
+export type DrawerParamList = {
+  MainTabs: NavigatorScreenParams<MainTabParamList>;
+};
+
+// ── Main Bottom Tabs ─────────────────────────────────────────
+export type MainTabParamList = {
+  HomeTab:     NavigatorScreenParams<HomeStackParamList>;
+  ProjectsTab: NavigatorScreenParams<ProjectsStackParamList>;
+  DetectorTab: NavigatorScreenParams<DetectorStackParamList>;
+  ThreeDTab:   NavigatorScreenParams<ThreeDStackParamList>;
+  SettingsTab: NavigatorScreenParams<SettingsStackParamList>;
+};
+
+// ── Root ─────────────────────────────────────────────────────
 export type RootStackParamList = {
-  Auth: undefined;
-  Main: undefined;
+  Auth:        NavigatorScreenParams<AuthStackParamList>;
+  Main:        NavigatorScreenParams<DrawerParamList>;
+  // Global modal routes accessible from anywhere
+  Paywall:     { feature: string };
+  ImageViewer: { uri: string; title?: string };
 };
 
-export type AuthNavigationProp = NativeStackNavigationProp<AuthStackParamList>;
-export type MainTabNavigationProp = NativeStackNavigationProp<MainTabParamList>;
-export type HomeNavigationProp = NativeStackNavigationProp<HomeStackParamList>;
-export type ProjectsNavigationProp = NativeStackNavigationProp<ProjectsStackParamList>;
-export type SurveyNavigationProp = NativeStackNavigationProp<SurveyStackParamList>;
-export type DetectorNavigationProp = NativeStackNavigationProp<DetectorStackParamList>;
-export type ThreeDNavigationProp = NativeStackNavigationProp<ThreeDStackParamList>;
-export type ReportsNavigationProp = NativeStackNavigationProp<ReportsStackParamList>;
-export type SettingsNavigationProp = NativeStackNavigationProp<SettingsStackParamList>;
+// ── Navigation prop helpers ──────────────────────────────────
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}
