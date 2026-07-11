@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
+import { Colors } from '@theme';
 
 export function GeologicalLayers() {
   return <View style={styles.container} />;
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: colors.background },
+  container: { flex: 1, backgroundColor: Colors.bgPrimary },
 });
