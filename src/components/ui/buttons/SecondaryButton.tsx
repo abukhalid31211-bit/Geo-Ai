@@ -1,40 +1,184 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Colors, BorderRadius, Typography } from '@theme';
+import React, { useCallback } from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  ViewStyle,
+  TextStyle,
+  ActivityIndicator,
+  Pressable,
+} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import {
+  Colors,
+  Typography,
+  Spacing,
+  Radius,
+  Springs,
+  Duration,
+} from '@theme';
+import { useHaptics } from '@hooks/useHaptics';
+import { AppIcon, AppIconName } from '../icons/AppIcon';
+
+type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface SecondaryButtonProps {
-  title?: string;
-  onPress?: () => void;
+  label: string;
+  onPress: () => void;
+  size?: ButtonSize;
+  loading?: boolean;
   disabled?: boolean;
+  icon?: AppIconName;
+  iconPosition?: 'left' | 'right';
+  fullWidth?: boolean;
+  color?: string;
+  style?: ViewStyle;
+  labelStyle?: TextStyle;
 }
 
-export function SecondaryButton({ title = '', onPress, disabled }: SecondaryButtonProps) {
+const SIZE_CONFIG = {
+  sm: {
+    height:       36,
+    paddingH:     Spacing[4],
+    borderRadius: Radius.buttonMd,
+    textStyle:    Typography.buttonSmall,
+    iconSize:     16,
+    borderWidth:  1,
+    loaderSize:   14,
+  },
+  md: {
+    height:       48,
+    paddingH:     Spacing[5],
+    borderRadius: Radius.buttonLg,
+    textStyle:    Typography.buttonMedium,
+    iconSize:     18,
+    borderWidth:  1.5,
+    loaderSize:   16,
+  },
+  lg: {
+    height:       56,
+    paddingH:     Spacing[6],
+    borderRadius: Radius.buttonLg,
+    textStyle:    Typography.buttonLarge,
+    iconSize:     20,
+    borderWidth:  1.5,
+    loaderSize:   18,
+  },
+} as const;
+
+export function SecondaryButton({
+  label,
+  onPress,
+  size = 'lg',
+  loading = false,
+  disabled = false,
+  icon,
+  iconPosition = 'right',
+  fullWidth = true,
+  color = Colors.primary,
+  style,
+  labelStyle,
+}: SecondaryButtonProps) {
+  const { light } = useHaptics();
+  const scale = useSharedValue(1);
+  const bgOpacity = useSharedValue(0);
+  const config = SIZE_CONFIG[size];
+  const isDisabled = disabled || loading;
+
+  const handlePressIn = useCallback(() => {
+    scale.value = withSpring(0.97, Springs.snappy);
+    bgOpacity.value = withTiming(1, { duration: Duration.fast });
+  }, []);
+
+  const handlePressOut = useCallback(() => {
+    scale.value = withSpring(1, Springs.snappy);
+    bgOpacity.value = withTiming(0, { duration: Duration.fast });
+  }, []);
+
+  const handlePress = useCallback(() => {
+    if (isDisabled) return;
+    light();
+    onPress();
+  }, [isDisabled, onPress]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: scale.value }],
+    opacity: isDisabled ? 0.45 : 1,
+  }));
+
+  const bgStyle = useAnimatedStyle(() => ({
+    backgroundColor: `rgba(245, 166, 35, ${bgOpacity.value * 0.1})`,
+  }));
+
   return (
-    <TouchableOpacity
-      style={[styles.button, disabled && styles.disabled]}
-      onPress={onPress}
-      disabled={disabled}
-      activeOpacity={0.8}
-    >
-      <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
+    <Animated.View style={[
+      animatedStyle,
+      fullWidth && { width: '100%' },
+      style,
+    ]}>
+      <Pressable
+        onPress={handlePress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={isDisabled}
+      >
+        <Animated.View style={[
+          styles.button,
+          bgStyle,
+          {
+            height: config.height,
+            paddingHorizontal: config.paddingH,
+            borderRadius: config.borderRadius,
+            borderWidth: config.borderWidth,
+            borderColor: isDisabled ? Colors.textDisabled : color,
+          },
+        ]}>
+          {loading ? (
+            <ActivityIndicator size={config.loaderSize} color={color} />
+          ) : (
+            <>
+              {icon && iconPosition === 'left' && (
+                <AppIcon
+                  name={icon}
+                  size={config.iconSize}
+                  color={isDisabled ? Colors.textDisabled : color}
+                />
+              )}
+
+              <Text style={[
+                config.textStyle,
+                { color: isDisabled ? Colors.textDisabled : color },
+                labelStyle,
+              ]}>
+                {label}
+              </Text>
+
+              {icon && iconPosition === 'right' && (
+                <AppIcon
+                  name={icon}
+                  size={config.iconSize}
+                  color={isDisabled ? Colors.textDisabled : color}
+                />
+              )}
+            </>
+          )}
+        </Animated.View>
+      </Pressable>
+    </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: Colors.primary,
-    borderRadius: BorderRadius.md,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
+    flexDirection: 'row',
     alignItems: 'center',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  text: {
-    ...Typography.bodyMedium,
-    color: Colors.bgPrimary,
-    fontWeight: '600',
+    justifyContent: 'center',
+    gap: Spacing[2],
+    overflow: 'hidden',
   },
 });

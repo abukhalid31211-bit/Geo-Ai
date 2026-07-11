@@ -1,40 +1,118 @@
-import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { Colors, BorderRadius, Typography } from '@theme';
+import React, { useCallback } from 'react';
+import {
+  Text,
+  ViewStyle,
+  TextStyle,
+  Pressable,
+} from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
+import {
+  Colors,
+  Typography,
+  Spacing,
+  Springs,
+  Duration,
+} from '@theme';
+import { useHaptics } from '@hooks/useHaptics';
+import { AppIcon, AppIconName } from '../icons/AppIcon';
+
+type ButtonSize = 'sm' | 'md' | 'lg';
 
 interface GhostButtonProps {
-  title?: string;
-  onPress?: () => void;
+  label: string;
+  onPress: () => void;
+  size?: ButtonSize;
   disabled?: boolean;
+  icon?: AppIconName;
+  iconPosition?: 'left' | 'right';
+  color?: string;
+  underline?: boolean;
+  style?: ViewStyle;
+  labelStyle?: TextStyle;
 }
 
-export function GhostButton({ title = '', onPress, disabled }: GhostButtonProps) {
+const SIZE_CONFIG = {
+  sm: { textStyle: Typography.buttonSmall, iconSize: 14 },
+  md: { textStyle: Typography.buttonMedium, iconSize: 16 },
+  lg: { textStyle: Typography.buttonLarge, iconSize: 18 },
+} as const;
+
+export function GhostButton({
+  label,
+  onPress,
+  size = 'md',
+  disabled = false,
+  icon,
+  iconPosition = 'right',
+  color = Colors.primary,
+  underline = false,
+  style,
+  labelStyle,
+}: GhostButtonProps) {
+  const { light } = useHaptics();
+  const opacity = useSharedValue(1);
+  const config = SIZE_CONFIG[size];
+
+  const handlePressIn = useCallback(() => {
+    opacity.value = withTiming(0.6, { duration: Duration.fast });
+  }, []);
+
+  const handlePressOut = useCallback(() => {
+    opacity.value = withSpring(1, Springs.snappy);
+  }, []);
+
+  const handlePress = useCallback(() => {
+    if (disabled) return;
+    light();
+    onPress();
+  }, [disabled, onPress]);
+
+  const animatedStyle = useAnimatedStyle(() => ({
+    opacity: disabled ? 0.4 : opacity.value,
+  }));
+
   return (
-    <TouchableOpacity
-      style={[styles.button, disabled && styles.disabled]}
-      onPress={onPress}
+    <Pressable
+      onPress={handlePress}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
       disabled={disabled}
-      activeOpacity={0.8}
     >
-      <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
+      <Animated.View style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: Spacing[1],
+          paddingVertical: Spacing[1],
+          paddingHorizontal: Spacing[2],
+        },
+        animatedStyle,
+        style,
+      ]}>
+        {icon && iconPosition === 'left' && (
+          <AppIcon name={icon} size={config.iconSize} color={color} />
+        )}
+
+        <Text style={[
+          config.textStyle,
+          {
+            color: disabled ? Colors.textDisabled : color,
+            textDecorationLine: underline ? 'underline' : 'none',
+          },
+          labelStyle,
+        ]}>
+          {label}
+        </Text>
+
+        {icon && iconPosition === 'right' && (
+          <AppIcon name={icon} size={config.iconSize} color={color} />
+        )}
+      </Animated.View>
+    </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    backgroundColor: Colors.primary,
-    borderRadius: BorderRadius.md,
-    paddingHorizontal: 24,
-    paddingVertical: 14,
-    alignItems: 'center',
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  text: {
-    ...Typography.bodyMedium,
-    color: Colors.bgPrimary,
-    fontWeight: '600',
-  },
-});
