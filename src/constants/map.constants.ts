@@ -1,22 +1,28 @@
-export const DEFAULT_MAP_CENTER = {
-  latitude: 24.7136,
-  longitude: 46.6753,
-};
+// Mapbox configuration
+export const MAP_CONFIG = {
+  // Replace with your actual Mapbox public token
+  MAPBOX_TOKEN: 'YOUR_MAPBOX_PUBLIC_TOKEN',
 
-export const DEFAULT_MAP_ZOOM = 10;
-export const MIN_MAP_ZOOM = 0;
-export const MAX_MAP_ZOOM = 20;
+  // Default camera settings
+  DEFAULT_CENTER: [46.7219, 24.6877] as [number, number], // Riyadh
+  DEFAULT_ZOOM: 12,
+  MIN_ZOOM: 1,
+  MAX_ZOOM: 22,
 
-export const MAP_STYLES = {
-  dark: 'mapbox://styles/mapbox/dark-v11',
-  satellite: 'mapbox://styles/mapbox/satellite-v9',
-  streets: 'mapbox://styles/mapbox/streets-v12',
+  // Map styles
+  STYLES: {
+    satellite: 'mapbox://styles/mapbox/satellite-streets-v12',
+    dark:      'mapbox://styles/mapbox/dark-v11',
+    outdoors:  'mapbox://styles/mapbox/outdoors-v12',
+    streets:   'mapbox://styles/mapbox/streets-v12',
+  },
+
+  // Layer IDs
+  LAYERS: {
+    contour:      'samgold-contour-layer',
+    heatmap:      'samgold-heatmap-layer',
+    points:       'samgold-points-layer',
+    targets:      'samgold-targets-layer',
+    userLocation: 'samgold-user-location',
+  },
 } as const;
-
-export const CONTOUR_COLORS = [
-  '#F5A623',
-  '#FF8F00',
-  '#FF6F00',
-  '#E65100',
-  '#BF360C',
-] as const;

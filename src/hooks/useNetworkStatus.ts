@@ -1,21 +1,33 @@
 import { useState, useEffect } from 'react';
-import { Platform } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
-export function useNetworkStatus() {
-  const [isConnected, setIsConnected] = useState(true);
+interface NetworkStatus {
+  isConnected: boolean;
+  isWifi: boolean;
+  isCellular: boolean;
+  connectionType: string | null;
+}
+
+export function useNetworkStatus(): NetworkStatus {
+  const [status, setStatus] = useState<NetworkStatus>({
+    isConnected: true,
+    isWifi: false,
+    isCellular: false,
+    connectionType: null,
+  });
 
   useEffect(() => {
-    if (Platform.OS === 'web') {
-      const handler = () => setIsConnected(navigator.onLine);
-      window.addEventListener('online', handler);
-      window.addEventListener('offline', handler);
-      return () => {
-        window.removeEventListener('online', handler);
-        window.removeEventListener('offline', handler);
-      };
-    }
-    // Native: assume connected for now
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      setStatus({
+        isConnected: state.isConnected ?? true,
+        isWifi: state.type === 'wifi',
+        isCellular: state.type === 'cellular',
+        connectionType: state.type,
+      });
+    });
+
+    return () => unsubscribe();
   }, []);
 
-  return { isConnected };
+  return status;
 }
