@@ -1,0 +1,62 @@
+{
+  "expo": {
+    "name": "SAMGOLD",
+    "slug": "samgold",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "dark",
+    "scheme": "samgold",
+    "splash": {
+      "image": "./assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0E1A"
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#0A0E1A",
+      "barStyle": "light-content"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundColor": "#0A0E1A"
+      },
+      "package": "com.samgold.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "VIBRATE",
+        "RECORD_AUDIO"
+      ]
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "يستخدم التطبيق موقعك لتحديد مواقع المسح الجيوفيزيائي",
+        "NSMicrophoneUsageDescription": "يستخدم التطبيق الميكروفون للمسح الصوتي",
+        "NSPhotoLibraryUsageDescription": "يستخدم التطبيق مكتبة الصور لاستيراد بيانات المسح"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-font",
+      "expo-location",
+      "expo-document-picker",
+      "expo-file-system",
+      "expo-router",
+      "expo-web-browser"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "MAPBOX_PUBLIC_TOKEN": "YOUR_MAPBOX_TOKEN_HERE"
+    }
+  }
+}
