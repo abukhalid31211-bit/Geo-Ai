@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Modal } from 'react-native';
-import { colors } from '@theme/colors';
-import { typography } from '@theme/typography';
-import { borderRadius } from '@theme/borderRadius';
-import { spacing } from '@theme/spacing';
+import { Colors, Spacing, BorderRadius, Typography } from '@theme';
 
 interface ConfirmDialogProps {
   visible?: boolean;
@@ -24,12 +21,12 @@ export function ConfirmDialog({ visible = false, message = '', onDismiss }: Conf
 }
 
 const styles = StyleSheet.create({
-  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.overlay },
+  overlay: { flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.overlay },
   container: {
-    backgroundColor: colors.surfaceElevated,
-    borderRadius: borderRadius.lg,
-    padding: spacing.xl,
-    marginHorizontal: spacing.xxxl,
+    backgroundColor: Colors.surfaceElevated,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing[5],
+    marginHorizontal: Spacing[8],
   },
-  text: { ...typography.body.md, color: colors.text },
+  text: { ...Typography.bodyMedium, color: Colors.textPrimary },
 });

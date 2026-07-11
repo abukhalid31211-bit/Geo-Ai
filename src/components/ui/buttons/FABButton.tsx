@@ -1,8 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
-import { typography } from '@theme/typography';
-import { borderRadius } from '@theme/borderRadius';
+import { Colors, BorderRadius, Typography } from '@theme';
 
 interface FABButtonProps {
   title?: string;
@@ -25,8 +23,8 @@ export function FABButton({ title = '', onPress, disabled }: FABButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: colors.gold,
-    borderRadius: borderRadius.md,
+    backgroundColor: Colors.primary,
+    borderRadius: BorderRadius.md,
     paddingHorizontal: 24,
     paddingVertical: 14,
     alignItems: 'center',
@@ -35,8 +33,8 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   text: {
-    ...typography.body.md,
-    color: colors.background,
+    ...Typography.bodyMedium,
+    color: Colors.bgPrimary,
     fontWeight: '600',
   },
 });

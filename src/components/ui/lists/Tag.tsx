@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
-import { typography } from '@theme/typography';
-import { borderRadius } from '@theme/borderRadius';
-import { spacing } from '@theme/spacing';
+import { Colors, Spacing, BorderRadius, Typography } from '@theme';
 
 interface TagProps {
   label?: string;
@@ -19,10 +16,10 @@ export function Tag({ label = '' }: TagProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.surfaceElevated,
-    borderRadius: borderRadius.sm,
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
+    backgroundColor: Colors.surfaceElevated,
+    borderRadius: BorderRadius.sm,
+    paddingHorizontal: Spacing[2],
+    paddingVertical: Spacing[1],
   },
-  text: { ...typography.caption.md, color: colors.text },
+  text: { ...Typography.caption, color: Colors.textPrimary },
 });

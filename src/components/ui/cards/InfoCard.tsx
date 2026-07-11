@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
-import { borderRadius } from '@theme/borderRadius';
-import { spacing } from '@theme/spacing';
-import { shadows } from '@theme/shadows';
+import { Colors, Spacing, BorderRadius, Shadows } from '@theme';
 
 interface InfoCardProps {
   children?: React.ReactNode;
@@ -15,9 +12,9 @@ export function InfoCard({ children }: InfoCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: colors.surface,
-    borderRadius: borderRadius.lg,
-    padding: spacing.lg,
-    ...shadows.md,
+    backgroundColor: Colors.surfacePrimary,
+    borderRadius: BorderRadius.lg,
+    padding: Spacing[4],
+    ...Shadows.md,
   },
 });

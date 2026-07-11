@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import { colors } from '@theme/colors';
+import { Colors } from '@theme';
 
 interface ProgressBarProps {
   size?: number | 'small' | 'large';
@@ -9,7 +9,7 @@ interface ProgressBarProps {
 export function ProgressBar({ size = 'large' }: ProgressBarProps) {
   return (
     <View style={styles.container}>
-      <ActivityIndicator size={size} color={colors.gold} />
+      <ActivityIndicator size={size} color={Colors.primary} />
     </View>
   );
 }

@@ -1,9 +1,6 @@
 import React from 'react';
 import { View, TextInput as RNTextInput, Text, StyleSheet } from 'react-native';
-import { colors } from '@theme/colors';
-import { typography } from '@theme/typography';
-import { borderRadius } from '@theme/borderRadius';
-import { spacing } from '@theme/spacing';
+import { Colors, Spacing, BorderRadius, Typography } from '@theme';
 
 interface SearchInputProps {
   label?: string;
@@ -21,23 +18,23 @@ export function SearchInput({ label, value, onChangeText, placeholder }: SearchI
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor={colors.textTertiary}
+        placeholderTextColor={Colors.textDisabled}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { marginBottom: spacing.md },
-  label: { ...typography.label.sm, color: colors.textSecondary, marginBottom: spacing.xs },
+  container: { marginBottom: Spacing[3] },
+  label: { ...Typography.labelSmall, color: Colors.textSecondary, marginBottom: Spacing[1] },
   input: {
-    ...typography.body.md,
-    color: colors.text,
-    backgroundColor: colors.surfaceElevated,
-    borderRadius: borderRadius.md,
-    paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
+    ...Typography.bodyMedium,
+    color: Colors.textPrimary,
+    backgroundColor: Colors.surfaceElevated,
+    borderRadius: BorderRadius.md,
+    paddingHorizontal: Spacing[4],
+    paddingVertical: Spacing[3],
     borderWidth: 1,
-    borderColor: colors.border,
+    borderColor: Colors.borderDefault,
   },
 });
