@@ -94,14 +94,15 @@ export default function SplashScreen() {
     cancelAnimation(pulseOp);
     cancelAnimation(pulseSc);
 
-    const [seenOnboarding, isAuth] = await Promise.all([
-      SplashUtils.hasSeenOnboarding(),
-      SplashUtils.isAuthenticated(),
-    ]);
+    // Auth store state is persisted — more reliable than raw AsyncStorage
+    const { useAuthStore } = await import('@store/authStore');
+    const authState = useAuthStore.getState();
+    const onboardingDone = await SplashUtils.hasSeenOnboarding();
 
-    if (isAuth) {
-      navigation.replace('Login'); // → Main in Prompt #21
-    } else if (seenOnboarding) {
+    if (authState.isAuthenticated && authState.token) {
+      // Already authenticated — RootNavigator will redirect to Main automatically
+      navigation.replace('Login');
+    } else if (onboardingDone) {
       navigation.replace('Login');
     } else {
       navigation.replace('Onboarding');

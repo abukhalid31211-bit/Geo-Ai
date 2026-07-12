@@ -48,3 +48,18 @@ export const Schemas = {
     resolution:  z.number().min(0.1).max(1),
   }),
 } as const;
+
+// ── Standalone schema exports (for direct import) ─────────────
+import { z } from 'zod';
+
+export const loginFormSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'البريد الإلكتروني مطلوب')
+    .email('البريد الإلكتروني غير صحيح'),
+  password: z
+    .string()
+    .min(6, 'كلمة المرور يجب أن تكون 6 أحرف على الأقل'),
+});
+
+export type LoginFormData = z.infer<typeof loginFormSchema>;

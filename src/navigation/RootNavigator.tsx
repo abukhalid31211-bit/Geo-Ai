@@ -8,8 +8,9 @@ import { StatusBar }                  from 'expo-status-bar';
 import { useFontLoader }              from '@hooks/useFontLoader';
 import { Colors }                     from '@theme';
 import { SnackbarProvider }           from '@components/ui/feedback';
-import { RootStackParamList }         from './types';
+import { useAuthStore }               from '@store/authStore';
 import { linkingConfig }              from './linkingConfig';
+import { RootStackParamList }         from './types';
 import { PlaceholderScreen }          from './PlaceholderScreen';
 
 import AuthNavigator   from './AuthNavigator';
@@ -17,15 +18,58 @@ import DrawerNavigator from './DrawerNavigator';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+// ── Inner navigator — reads auth state reactively ─────────────
+function AppNavigator() {
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!isAuthenticated ? (
+        <Stack.Screen
+          name="Auth"
+          component={AuthNavigator}
+          options={{ animationTypeForReplace: 'pop' }}
+        />
+      ) : (
+        <Stack.Screen
+          name="Main"
+          component={DrawerNavigator}
+          options={{ animationTypeForReplace: 'push' }}
+        />
+      )}
+
+      {/* Global modal screens */}
+      <Stack.Screen
+        name="Paywall"
+        component={PlaceholderScreen}
+        options={{
+          presentation: 'modal',
+          animation:    'slide_from_bottom',
+          headerShown:  false,
+        }}
+      />
+      <Stack.Screen
+        name="ImageViewer"
+        component={PlaceholderScreen}
+        options={{
+          presentation: 'fullScreenModal',
+          animation:    'fade',
+          headerShown:  false,
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+// ── Root — providers + NavigationContainer ────────────────────
 export default function RootNavigator() {
   const { fontsLoaded, onLayoutRootView } = useFontLoader();
 
   if (!fontsLoaded) {
-    return <View style={{ flex: 1, backgroundColor: Colors.bgPrimary }} />;
+    return (
+      <View style={{ flex: 1, backgroundColor: Colors.bgPrimary }} />
+    );
   }
-
-  // NOTE: Will be replaced with real auth state in Prompt #21
-  const isAuthenticated = false;
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -47,34 +91,7 @@ export default function RootNavigator() {
             }}
           >
             <StatusBar style="light" backgroundColor={Colors.bgPrimary} />
-
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              {!isAuthenticated ? (
-                <Stack.Screen name="Auth" component={AuthNavigator} />
-              ) : (
-                <Stack.Screen name="Main" component={DrawerNavigator} />
-              )}
-
-              {/* Global Modal Screens */}
-              <Stack.Screen
-                name="Paywall"
-                component={PlaceholderScreen}
-                options={{
-                  presentation: 'modal',
-                  animation:    'slide_from_bottom',
-                  headerShown:  false,
-                }}
-              />
-              <Stack.Screen
-                name="ImageViewer"
-                component={PlaceholderScreen}
-                options={{
-                  presentation: 'fullScreenModal',
-                  animation:    'fade',
-                  headerShown:  false,
-                }}
-              />
-            </Stack.Navigator>
+            <AppNavigator />
           </NavigationContainer>
         </SnackbarProvider>
       </SafeAreaProvider>
