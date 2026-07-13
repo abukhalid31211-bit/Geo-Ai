@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { NavigationContainer }        from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,14 +13,27 @@ import { linkingConfig }              from './linkingConfig';
 import { RootStackParamList }         from './types';
 import { PlaceholderScreen }          from './PlaceholderScreen';
 
-import AuthNavigator   from './AuthNavigator';
-import DrawerNavigator from './DrawerNavigator';
+import AuthNavigator      from './AuthNavigator';
+import DrawerNavigator    from './DrawerNavigator';
+import AuthLoadingScreen  from '@screens/auth/AuthLoadingScreen';
+import PaywallScreen      from '@screens/subscriptions/PaywallScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 // ── Inner navigator — reads auth state reactively ─────────────
 function AppNavigator() {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  const isInitializing  = useAuthStore(state => state.isInitializing);
+  const initialize      = useAuthStore(state => state.initialize);
+
+  useEffect(() => {
+    void initialize();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (isInitializing) {
+    return <AuthLoadingScreen />;
+  }
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -41,7 +54,7 @@ function AppNavigator() {
       {/* Global modal screens */}
       <Stack.Screen
         name="Paywall"
-        component={PlaceholderScreen}
+        component={PaywallScreen}
         options={{
           presentation: 'modal',
           animation:    'slide_from_bottom',
