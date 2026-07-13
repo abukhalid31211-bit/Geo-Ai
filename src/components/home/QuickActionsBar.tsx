@@ -1,15 +1,44 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Colors, Spacing, BorderRadius } from '@theme';
+import { StyleSheet } from 'react-native';
+import { Spacing } from '@theme';
+import { Row } from '@components/ui/layout/Row';
+import { SectionHeader } from '@components/ui/layout/SectionHeader';
+import { QuickActionItem } from './QuickActionItem';
+import type { AppIconName } from '@components/ui/icons/AppIcon';
 
-export function QuickActionsBar() {
-  return <View style={styles.container} />;
+export interface QuickAction {
+  key:     string;
+  icon:    AppIconName;
+  label:   string;
+  onPress: () => void;
+  isGold?: boolean;
+}
+
+interface QuickActionsBarProps {
+  actions: QuickAction[];
+}
+
+export function QuickActionsBar({ actions }: QuickActionsBarProps) {
+  return (
+    <>
+      <SectionHeader title="الوصول السريع" />
+      <Row justify="space-between" style={styles.row}>
+        {actions.map((action) => (
+          <QuickActionItem
+            key={action.key}
+            icon={action.icon}
+            label={action.label}
+            onPress={action.onPress}
+            isGold={action.isGold}
+          />
+        ))}
+      </Row>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: Colors.surfacePrimary,
-    borderRadius: BorderRadius.lg,
-    padding: Spacing[4],
+  row: {
+    paddingHorizontal: Spacing[1],
   },
 });

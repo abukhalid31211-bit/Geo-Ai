@@ -1,0 +1,12 @@
+export { HomeHeader }           from './HomeHeader';
+export { QuickActionsBar }      from './QuickActionsBar';
+export type { QuickAction }     from './QuickActionsBar';
+export { QuickActionItem }      from './QuickActionItem';
+export { HeroDetectorCard }     from './HeroDetectorCard';
+export { MiniHeatmap }          from './MiniHeatmap';
+export { AIInsightsWidget }     from './AIInsightsWidget';
+export { ActiveProjectsWidget } from './ActiveProjectsWidget';
+export { ProjectMiniCard }      from './ProjectMiniCard';
+export { StatsBar }             from './StatsBar';
+export { NotificationItem }     from './NotificationItem';
+export type { HomeNotification } from './NotificationItem';

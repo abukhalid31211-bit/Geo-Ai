@@ -12,9 +12,12 @@ import { useAuthStore }               from '@store/authStore';
 import { linkingConfig }              from './linkingConfig';
 import { RootStackParamList }         from './types';
 import { PlaceholderScreen }          from './PlaceholderScreen';
+import { slideFromRightOptions }      from './screenOptions';
 
 import AuthNavigator      from './AuthNavigator';
 import DrawerNavigator    from './DrawerNavigator';
+import SurveyNavigator    from './SurveyNavigator';
+import ReportsNavigator   from './ReportsNavigator';
 import AuthLoadingScreen  from '@screens/auth/AuthLoadingScreen';
 import PaywallScreen      from '@screens/subscriptions/PaywallScreen';
 
@@ -50,6 +53,10 @@ function AppNavigator() {
           options={{ animationTypeForReplace: 'push' }}
         />
       )}
+
+      {/* Full-flow stacks reachable from Home's quick actions, not on the tab bar */}
+      <Stack.Screen name="Survey"  component={SurveyNavigator}  options={slideFromRightOptions} />
+      <Stack.Screen name="Reports" component={ReportsNavigator} options={slideFromRightOptions} />
 
       {/* Global modal screens */}
       <Stack.Screen

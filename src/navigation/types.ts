@@ -97,6 +97,10 @@ export type MainTabParamList = {
 export type RootStackParamList = {
   Auth:        NavigatorScreenParams<AuthStackParamList>;
   Main:        NavigatorScreenParams<DrawerParamList>;
+  // Survey and Reports are full flows reachable from Home's quick actions,
+  // but aren't part of the bottom tab bar — pushed as root-level stacks.
+  Survey:      NavigatorScreenParams<SurveyStackParamList>;
+  Reports:     NavigatorScreenParams<ReportsStackParamList>;
   // Global modal routes accessible from anywhere
   Paywall:     { feature: string };
   ImageViewer: { uri: string; title?: string };

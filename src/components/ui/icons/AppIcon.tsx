@@ -15,6 +15,7 @@ export type AppIconName =
   | 'detector'
   | 'threed'
   | 'settings'
+  | 'menu'
   // Actions
   | 'add'
   | 'edit'
@@ -107,6 +108,7 @@ const ICON_MAP: IconMap = {
   detector:     { lib: 'material', name: 'radar' },
   threed:       { lib: 'material', name: 'cube-outline' },
   settings:     { lib: 'ion',      name: 'settings-outline' },
+  menu:         { lib: 'ion',      name: 'menu-outline' },
   // Actions
   add:          { lib: 'ion',      name: 'add' },
   edit:         { lib: 'feather',  name: 'edit-2' },

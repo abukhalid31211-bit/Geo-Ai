@@ -25,6 +25,10 @@ interface AppHeaderProps {
   transparent?: boolean;
   blur?: boolean;
   onBackPress?: () => void;
+  /** Overrides the default title/subtitle text block entirely, e.g. a custom branded title. */
+  centerSlot?: React.ReactNode;
+  /** Extra content rendered after `rightActions`, e.g. an Avatar. */
+  rightSlot?: React.ReactNode;
 }
 
 export function AppHeader({
@@ -35,6 +39,8 @@ export function AppHeader({
   transparent = false,
   blur = false,
   onBackPress,
+  centerSlot,
+  rightSlot,
 }: AppHeaderProps) {
   const insets = useSafeAreaInsets();
 
@@ -80,16 +86,20 @@ export function AppHeader({
 
       {/* Center — Title */}
       <View style={styles.centerContainer}>
-        <Text
-          style={styles.title}
-          numberOfLines={1}
-        >
-          {title}
-        </Text>
-        {subtitle && (
-          <Text style={styles.subtitle} numberOfLines={1}>
-            {subtitle}
-          </Text>
+        {centerSlot ?? (
+          <>
+            <Text
+              style={styles.title}
+              numberOfLines={1}
+            >
+              {title}
+            </Text>
+            {subtitle && (
+              <Text style={styles.subtitle} numberOfLines={1}>
+                {subtitle}
+              </Text>
+            )}
+          </>
         )}
       </View>
 
@@ -116,6 +126,7 @@ export function AppHeader({
             )}
           </TouchableOpacity>
         ))}
+        {rightSlot}
       </View>
     </View>
   );

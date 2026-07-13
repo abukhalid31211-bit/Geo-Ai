@@ -2,6 +2,7 @@
 // Import from '@store' anywhere a screen needs more than one store, or
 // from the individual '@store/<name>' path for a single store.
 export { useAuthStore }         from './authStore';
+export { useHomeStore }         from './homeStore';
 export { useProjectsStore }     from './projectsStore';
 export { useSubscriptionStore } from './subscriptionStore';
 export { useDetectorStore }     from './detectorStore';
